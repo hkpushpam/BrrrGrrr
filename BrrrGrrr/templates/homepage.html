@@ -1,0 +1,136 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <title>BrrrGrrr</title>
+        <link rel='stylesheet' type='text/css' href='{% static 'BrrrGrrr/css/style.css' %}'>
+        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css'>
+    </head>
+    <body>
+        <div class='topLayer'>
+            <div class='above vertical_lines'>
+                <br><br><p>&nbsp;</p><br><p>&nbsp;</p><br><p>&nbsp;</p>
+            </div>
+            <div class='above menu'>
+                {% if user.is_authenticated %}
+                    <input checked='' class='menu_input' id='btn1' name='menu' type='radio' />
+                    <label class='menu_label' for='btn1'>
+                        <div class='fa fa-user'></div>
+                        <div class='menu_text'>
+                            {{ user.username }}
+                        </div>
+                    </label>
+                    <input class='menu_input' id='btn2' name='menu' type='radio' />
+                    <label class='menu_label' for='btn2'>
+                        <div class='fa fa-sign-out-alt'></div>
+                        <div class='menu_text'>
+                            <a href='{% url 'BrrrGrrr:logout' %}'>Logout</a>
+                        </div>
+                    </label>
+                {% else %}
+                    <input checked='' class='menu_input' id='btn1' name='menu' type='radio' />
+                    <label class='menu_label' for='btn1'>
+                        <div class='fa fa-sign-in-alt'></div>
+                        <div class='menu_text'>
+                            <a href='{% url 'BrrrGrrr:signup' %}'>Login</a>
+                        </div>
+                    </label>
+                {% endif %}
+            </div>
+            <div class='above logo'>
+                <img src='{% static 'BrrrGrrr/image/logo.png' %}' alt='BrrrGrrr Logo'>
+                <h2><b>BRRRGRRR</b></h2>
+            </div>
+            <div class='midBox'>
+                <img class='content utensil' src='{% static 'BrrrGrrr/image/utensils.png' %}'>
+                {% if material_data %}
+                    <div class='prices'>
+                        <h3>Prices</h3>
+                        <table>
+                            {% for material_data in material_data %}
+                                <tr>
+                                    <td>{{ material_data.material }}</td>
+                                    <td style='width: 18px;'></td>
+                                    <td>₹{{ material_data.price }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                {% endif %}
+            </div>
+            <div class='lastBox'>
+                <img src='{% static 'BrrrGrrr/image/burger.png' %}' class='burger'>
+                <div style='display: flex; margin-left: 20%; align-items: flex-end;'>
+                    <div class='Stock'>
+                        <h3>Ingredients</h3>
+                        <table>
+                            {% for material_data in material_data|slice:':5' %}
+                                <tr>
+                                    <td></td><td>{{ material_data.material }}</td><td></td>
+                                </tr>
+                            {% endfor %}
+                            {% if material_data|length > 5 %}
+                                <tr>
+                                    <td></td><td>Many more...</td><td></td>
+                                </tr>
+                                <tr></tr>
+                            {% endif %}
+                            {% if not material_data %}
+                                <tr>
+                                    <td></td><td>Sorry We're out of stock</td><td></td>
+                                </tr>
+                                <tr></tr>
+                            {% endif %}
+                        </table>
+                    </div>
+                    <div class='BackStock'>
+                        {% if material_data|length > 3 %}
+                            <p>&nbsp;</p>
+                        {% endif %}
+                        {% if material_data|length >= 2 %}
+                            <p>&nbsp;</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id='belowLayer'>
+            <form id='orderForm' action='{% url 'BrrrGrrr:receive' %}' method='post' class='belowLayer'>
+                {% csrf_token  %}
+                <div id='materials'>
+                    <fieldset class='checkbox-group'>
+                        {% if material_data %}
+                            <legend class='checkbox-group-legend'>Choose what goes in your burger</legend>
+                        {% endif %}
+                        {% for material_data in material_data %}
+                            <label>
+                                <input type='checkbox' class='checkbox-input' data-price='{{ material_data.price }}' name='{{ material_data.material }}'>
+                                <span class='checkbox-tile'>
+                                    <span class='checkbox-label'>{{ material_data.material }}</span>
+                                </span>
+                            </label>
+                        {% endfor %}
+                        {% if not material_data %}
+                        <label class='checkbox-label' style='white-space:nowrap; color: blue;'>
+                            <p>Sorry We are out of stock</p>
+                        </label>
+                        {% endif %}
+                    </fieldset>
+                </div>
+                {% if material_data %}
+                    <div style='background-color: white; padding: 10px; margin-right: 10%; margin-bottom: auto;'>
+                        <div class='BillBox'>
+                            <div class='BillBoxInside'>
+                                <p>Your Current Order Price is</p>
+                                <p style='font-size: large; font-weight: 600;' data-title='Total Price'>₹ 0.00</p>
+                                <p>To Pay</p>
+                            </div>
+                            <button type='submit' class='PayButton'>Pay and recieve order</button>
+                        </div>
+                    </div>
+                {% endif %}
+            </form>
+        </div>
+        <script src='{% static 'BrrrGrrr/js/script2.js' %}'></script>
+    </body>
+</html>

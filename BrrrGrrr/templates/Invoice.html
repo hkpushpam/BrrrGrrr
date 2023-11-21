@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang='en' class='abc'>
+    <head>
+        <title>BrrrGrrr Orders</title>
+        <link rel='stylesheet' type='text/css' href='{% static 'BrrrGrrr/css/style.css' %}'>
+    </head>
+    <body class='wer'>
+        <header class='tyu'>
+            <h1 class='ik'>Invoice</h1>
+            <address>
+                <table>
+                    <tr>
+                        <td style='font-weight:bold;'>Username: </td><td>{{user.username}}</td>
+                    </tr>
+                    <tr>
+                        <td style='font-weight:bold;'>Name: </td><td>{{user.first_name}} {{user.last_name}} </td>
+                    </tr>
+                    <tr>
+                        <td style='font-weight:bold;'>Email: </td><td>{{user.email}} </td>
+                    </tr>
+                </table>
+            </address>
+            <span><img alt=''></span>
+        </header>
+        <article>
+            <h1 class='ik'>Recipient</h1>
+            <address>
+                <p>BrrrGrrr</p>
+                <p style='font-size: small;'>Customise your Burger</p>
+            </address>
+            <table class='meta'>
+                <tr class='a'>
+                    <th class='b'><span>Invoice</span></th>
+                    <td class='c'><span data-prefix>#</span><span>101138</span></td>
+                </tr>
+                <tr class='a'>
+                    <th class='b'><span>Order Date</span></th>
+                    <td class='c'><span id='Order_date'>Date</span></td>
+                </tr>
+                <tr class='a'>
+                    <th class='b'><span>Amount Due</span></th>
+                    <td class='c'><span data-prefix>₹</span><span id='Grand1'>00.00</span></td>
+                </tr>
+            </table>
+                <table class='inventory'>
+                <thead>
+                    <tr class='a'>
+                        <th class='b'><span>Item</span></th>
+                        <th class='b'><span>Price</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for material_data in materials_with_prices %}
+                        <tr class='a'>
+                            <td class='c'><span>{{ material_data.material }}</span></td>
+                            <td class='c'><span data-prefix>₹</span><span id='cost' data-price='{{ material_data.price }}'>{{ material_data.price }}</span></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <table class='balance'>
+                <tr class='a'>
+                    <th class='b'><span>Total</span></th>
+                    <td class='c'><span data-prefix>₹</span><span id='Total'>00.00</span></td>
+                </tr>
+                <tr class='a'>
+                    <th class='b'><span>Tax</span></th>
+                    <td class='c'><span data-prefix>₹</span><span id='tax'>00.00</span></td>
+                </tr>
+                <tr class='a'>
+                    <th class='b'><span>Grand Total</span></th>
+                    <td class='c'><span data-prefix>₹</span><span id='Grand2'>00.00</span></td>
+                </tr>
+            </table>
+        </article>
+        <aside>
+            <h1 class='ik'><span>Additional Notes</span></h1>
+            <div>
+                <p>A 5% GST on food services provided by restaurants (both air-conditioned and non a/c).</p>
+            </div>
+        </aside>
+        <script src='{% static 'BrrrGrrr/js/invoice.js' %}'></script>
+    </body>
+
+</html>

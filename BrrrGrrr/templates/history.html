@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <title>BrrrGrrr Orders</title>
+        <link rel='stylesheet' type='text/css' href='{% static "BrrrGrrr/css/style.css" %}'>
+        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css'>
+    </head>
+    <body class='body'>
+        <div class='Logo'>
+            <div class='above vertical_lines'>
+                <br><br><p>&nbsp;</p><br><p>&nbsp;</p><br><p>&nbsp;</p>
+            </div>
+        </div>
+        <div class='above menu'>
+            {% if user.is_authenticated %}
+            <input checked='' class='menu_input' id='btn1' name='menu' type='radio' />
+            <label class='menu_label' for='btn1'>
+                <div class='fa fa-user'></div>
+                <div class='menu_text'>
+                    {{ user.username }}
+                </div>
+            </label>
+            <input class='menu_input' id='btn2' name='menu' type='radio' />
+            <label class='menu_label' for='btn2'>
+                <div class='fa fa-sign-out-alt'></div>
+                <div class='menu_text'>
+                    <a href='{% url 'BrrrGrrr:logout' %}'>Logout</a>
+                </div>
+            </label>
+            {% else %}
+                <input checked='' class='menu_input' id='btn1' name='menu' type='radio' />
+                <label class='menu_label' for='btn1'>
+                <div class='fa fa-sign-in-alt'></div>
+                    <div class='menu_text'>
+                        <a href='{% url 'BrrrGrrr:signup' %}'>Login</a>
+                    </div>
+                </label>
+            {% endif %}
+        </div>
+    <div class='logo'>
+        <img src='{% static 'BrrrGrrr/image/logo.png' %}' alt='BrrrGrrr Logo'>
+        <h2><b>BRRRGRRR</b></h2>
+    </div>
+    {% if Order_history %}
+        <section class='base-cards'>
+            {% for item in Order_history %}
+                <div class='card2' id='{{ item.Order_history }}'>
+                <h3>{{ item.id }}</h3>
+                <h4>{{ item.order_user }}</h4>
+                    <table>
+                        {% for material in item.items%}
+                            <tr>
+                                <td>{{ material }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            {% endfor %}
+        </section>
+    {% else %}
+        <h2 class="noda"> Sorry No Orders Till Now </h2>
+    {% endif %}
+    <div>
+        <button class='button-1'><a href='{% url 'BrrrGrrr:orders' %}'>Order</a></button>
+    </div>
+    <script src='{% static "BrrrGrrr/js/order.js" %}'></script>
+    </body>
+</html>

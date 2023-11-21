@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <title>BrrrGrrr Orders</title>
+    <link rel='stylesheet' type='text/css' href='{% static "BrrrGrrr/css/style.css" %}'>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css'>
+  </head>
+  <body class='body'>
+    <div class='Logo'>
+      <div class='above vertical_lines'>
+        <br><br><p>&nbsp;</p><br><p>&nbsp;</p><br><p>&nbsp;</p>
+      </div>
+    </div>
+    <div class='above menu'>
+      {% if user.is_authenticated %}
+          <input checked='' class='menu_input' id='btn1' name='menu' type='radio' />
+          <label class='menu_label' for='btn1'>
+              <div class='fa fa-user'></div>
+              <div class='menu_text'>
+                  {{ user.username }}
+              </div>
+          </label>
+          <input class='menu_input' id='btn2' name='menu' type='radio' />
+          <label class='menu_label' for='btn2'>
+              <div class='fa fa-sign-out-alt'></div>
+              <div class='menu_text'>
+                  <a href='{% url 'BrrrGrrr:logout' %}'>Logout</a>
+              </div>
+          </label>
+      {% else %}
+          <input checked='' class='menu_input' id='btn1' name='menu' type='radio' />
+          <label class='menu_label' for='btn1'>
+              <div class='fa fa-sign-in-alt'></div>
+              <div class='menu_text'>
+                  <a href='{% url 'BrrrGrrr:signup' %}'>Login</a>
+              </div>
+          </label>
+      {% endif %}
+    </div>
+    <div class='switch-button'>
+      <input class='switch-button-checkbox' id='toggle-switch' type='checkbox'>
+      <label class='switch-button-label' for=''><span class='switch-button-label-span'>Order</span></label>
+    </div>
+    <div class='logo'>
+      <img src='{% static 'BrrrGrrr/image/logo.png' %}' alt='BrrrGrrr Logo'>
+      <h2><b>BRRRGRRR</b></h2>
+    </div>
+    <div class='part-container'>
+      <div id='part-one' class='part active'>
+        {% if order_data %}
+          <section class='base-cards'>
+            {% for item in order_data %}
+              <div class='card2' id='{{ item.Order_Id }}'>
+                <h3>{{ item.Order_Id }}</h3>
+                <table>
+                  {% for material in item.Items%}
+                    <tr>
+                      <td>{{ material }}</td>
+                    </tr>
+                  {% endfor %}
+                </table>
+                <button class='complete-order-btn' data-order-id='{{ item.Order_Id }}'>Complete Order</button>
+              </div>
+            {% endfor %}
+          </section>
+        {% else %}
+          <h2 class="noda"> Sorry No Orders Till Now </h2>
+        {% endif %}
+        {% if isOrderHistory %}
+          <div>
+            <button class='button-1'><a href='{% url 'BrrrGrrr:history' %}'>Order History</a></button>
+          </div>
+        {% endif %}
+        <script src='{% static "BrrrGrrr/js/order.js" %}'></script>
+      </div>
+      <div id='part-two' class='part'>
+        <div class='bBox'>
+          <div class='newEmployee'><a href='{% url 'BrrrGrrr:new' %}'>Add New Employee</a></div>
+        </div>
+        <div class='wrapper'>
+          {% if material_data %}
+            <div class='table'>
+              <div class='row header green'>
+                <div class='cell'>
+                  Product
+                </div>
+                <div class='cell'>
+                  Unit Price
+                </div>
+                <div class='cell'>
+                  Quantity
+                </div>
+                <div class='cell'>
+                  Edit
+                </div>
+              </div>
+              {% for material_data in material_data %}
+                <div class='row'>
+                  <div class='cell' data-title='Product'>
+                    {{ material_data.material }}
+                  </div>
+                  <div class='cell' data-title='Unit_Price'>
+                    ₹{{ material_data.price }}
+                  </div>
+                  <div class='cell' data-title='Quantity'>
+                    {{ material_data.quantity }}
+                  </div>
+                  <div class='cell' data-title='Edit'>
+                    <a href='#' class='edit-link'>Edit</a>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <h2 class='nodata'> Sorry No data Available </h2>
+          {% endif %}
+          <div>
+            {% if material_data %}
+              <button id='update-stock-btn' class='button-1'>Add New</button>
+              <script src='{% static "BrrrGrrr/js/admin.js" %}'></script>
+            {% else %}
+              <button id='stock' class='button-1'>Add your first material</button>
+              <script src='{% static "BrrrGrrr/js/admin2.js" %}'></script>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

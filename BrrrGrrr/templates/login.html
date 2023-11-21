@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <title>BrrrGrrr Orders</title>
+    <link rel='stylesheet' type='text/css' href='{% static 'BrrrGrrr/css/style.css' %}'>
+  </head>
+  <body class='login_page'>
+    {% if error %}
+    <script>
+        alert( '{{error}}' )
+    </script>
+    {% endif %}
+    <div class='main'>
+      <input type='checkbox' id='chk' aria-hidden='true'>
+      <div class='signup'>
+        <form action='{% url 'BrrrGrrr:signup' %}' method='post'>
+          {% csrf_token %}
+          <label class='label_box' for='chk' aria-hidden='true'>Sign up as User</label>
+          <input class='input_box' type='text' name='username' placeholder='User name' required=''>
+          <input class='input_box' type='text' name='firName' placeholder='First name' required=''>
+          <input class='input_box' type='text' name='lasName' placeholder='Last name' required=''>
+          <input class='input_box' type='email' name='email' placeholder='Email' required=''>
+          <input class='input_box' type='password' name='pwd' placeholder='Password' required=''>
+          <button class='button2' type='submit'>Sign up</button>
+        </form>
+      </div>
+
+      <div class='login'>
+        <form action='{% url 'BrrrGrrr:login' %}' method='post'>
+          {% csrf_token %}
+          <label class='label_box' for='chk' aria-hidden='true'>Login</label>
+          <input class='input_box' type='text' name='username' placeholder='User name' required=''>
+          <input class='input_box' type='password' name='pwd' placeholder='Password' required=''>
+          <button class='button2' type='submit'>Login</button>
+        </form>
+      </div>
+    </div>
+    <script>
+      const checkbox = document.getElementById('chk');
+      checkbox.checked = true;
+    </script>
+  </body>
+</html>
